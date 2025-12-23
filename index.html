@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ИИ Обзор: Младенец</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #ffcce6 0%, #ccf2ff 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            min-height: 90vh;
+            background-color: rgba(255, 255, 255, 0.92);
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Рамки-мишуры */
+        .frame {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            z-index: 1;
+        }
+
+        .left-frame {
+            left: 0;
+        }
+
+        .right-frame {
+            right: 0;
+        }
+
+        .tinsel {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .tinsel-piece {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #ff4de8, #4de8ff, #ffed4d);
+            border-radius: 50%;
+            animation: tinsel-float 3s ease-in-out infinite;
+            animation-delay: calc(var(--i) * 0.4s);
+            box-shadow: 0 0 10px rgba(255, 77, 232, 0.5);
+        }
+
+        @keyframes tinsel-float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.1); }
+        }
+
+        /* Основной контент */
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .title {
+            font-family: 'Comic Neue', cursive;
+            font-size: 2.8rem;
+            color: #ff6bc9;
+            margin-bottom: 40px;
+            text-shadow: 3px 3px 0 #4de8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .title i {
+            font-size: 2.5rem;
+        }
+
+        .text-box {
+            background: linear-gradient(145deg, #f0f9ff, #fff0f9);
+            padding: 40px;
+            border-radius: 25px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 5px dotted #a6e3ff;
+            position: relative;
+        }
+
+        .main-text {
+            font-size: 1.4rem;
+            line-height: 1.7;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            background: linear-gradient(90deg, #ffb6c1, #ffd700);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .fun-elements {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .bouncing-icon {
+            font-size: 2rem;
+            color: #ff6bc9;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* 3D Кнопка */
+        .btn-3d {
+            position: relative;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s;
+            outline: none;
+        }
+
+        .btn-3d:active {
+            transform: translateY(8px);
+        }
+
+        .btn-3d:active .btn-front {
+            transform: translateY(-8px);
+        }
+
+        .btn-front, .btn-back, .btn-bottom {
+            display: block;
+            position: relative;
+        }
+
+        .btn-front {
+            background-color: #4de876;
+            color: white;
+            padding: 22px 50px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-radius: 20px;
+            font-family: 'Comic Neue', cursive;
+            transform-style: preserve-3d;
+            transition: transform 0.3s;
+            box-shadow: 0 10px 0 #3ac763;
+            border: 3px solid #3ac763;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn-back {
+            position: absolute;
+            top: 8px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #3ac763;
+            border-radius: 20px;
+            z-index: 2;
+        }
+
+        .btn-bottom {
+            position: absolute;
+            top: 16px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #2aa652;
+            border-radius: 20px;
+            z-index: 1;
+        }
+
+        .btn-3d:hover .btn-front {
+            background-color: #5cf886;
+            transform: translateY(-5px);
+        }
+
+        .hint {
+            margin-top: 25px;
+            color: #888;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Плавающие иконки */
+        .floating-icon {
+            position: absolute;
+            font-size: 2.5rem;
+            color: #ff9d4d;
+            opacity: 0.7;
+            z-index: 0;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* Стили для второй страницы */
+        .secret-box {
+            background: linear-gradient(145deg, #fff9e6, #e6fffa);
+            border: 5px dotted #ffcc66;
+        }
+
+        .code-word {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .code-word h2 {
+            font-family: 'Comic Neue', cursive;
+            font-size: 3rem;
+            color: #ff6600;
+            text-shadow: 2px 2px 0 #ffcc00;
+        }
+
+        .carrot-text {
+            background: linear-gradient(90deg, #ff6600, #ff9900);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 3.2rem;
+        }
+
+        .code-word i {
+            font-size: 3rem;
+            color: #ff6600;
+        }
+
+        .secret-text {
+            font-size: 1.5rem;
+            color: #666;
+            font-style: italic;
+            margin-top: 20px;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            background: linear-gradient(45deg, #ff4de8, #4de8ff, #ffed4d);
+            animation: confetti-fall 5s linear infinite;
+        }
+
+        .confetti-piece:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .confetti-piece:nth-child(2) { left: 30%; animation-delay: 1s; }
+        .confetti-piece:nth-child(3) { left: 50%; animation-delay: 2s; }
+        .confetti-piece:nth-child(4) { left: 70%; animation-delay: 3s; }
+        .confetti-piece:nth-child(5) { left: 90%; animation-delay: 4s; }
+
+        @keyframes confetti-fall {
+            0% { top: -20px; transform: rotate(0deg); }
+            100% { top: 100%; transform: rotate(360deg); }
+        }
+
+        /* Анимация перехода */
+        .page-transition {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Кнопка назад */
+        .back-btn .btn-front {
+            background-color: #ff9d76;
+            box-shadow: 0 10px 0 #e88c65;
+            border: 3px solid #e88c65;
+        }
+
+        .back-btn .btn-back {
+            background-color: #e88c65;
+        }
+
+        .back-btn .btn-bottom {
+            background-color: #d17b54;
+        }
+
+        .back-btn:hover .btn-front {
+            background-color: #ffad8e;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                min-height: auto;
+            }
+            
+            .frame {
+                width: 40px;
+            }
+            
+            .title {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .text-box {
+                padding: 25px;
+            }
+            
+            .main-text {
+                font-size: 1.2rem;
+            }
+            
+            .btn-front {
+                padding: 18px 35px;
+                font-size: 1.5rem;
+            }
+            
+            .code-word h2 {
+                font-size: 2rem;
+            }
+            
+            .carrot-text {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Левая рамка-мишура -->
+        <div class="frame left-frame">
+            <div class="tinsel">
+                <div class="tinsel-piece" style="--i:0"></div>
+                <div class="tinsel-piece" style="--i:1"></div>
+                <div class="tinsel-piece" style="--i:2"></div>
+                <div class="tinsel-piece" style="--i:3"></div>
+                <div class="tinsel-piece" style="--i:4"></div>
+                <div class="tinsel-piece" style="--i:5"></div>
+                <div class="tinsel-piece" style="--i:6"></div>
+                <div class="tinsel-piece" style="--i:7"></div>
+            </div>
+        </div>
+        
+        <!-- Правая рамка-мишура -->
+        <div class="frame right-frame">
+            <div class="tinsel">
+                <div class="tinsel-piece" style="--i:0"></div>
+                <div class="tinsel-piece" style="--i:1"></div>
+                <div class="tinsel-piece" style="--i:2"></div>
+                <div class="tinsel-piece" style="--i:3"></div>
+                <div class="tinsel-piece" style="--i:4"></div>
+                <div class="tinsel-piece" style="--i:5"></div>
+                <div class="tinsel-piece" style="--i:6"></div>
+                <div class="tinsel-piece" style="--i:7"></div>
+            </div>
+        </div>
+        
+        <!-- ПЕРВАЯ СТРАНИЦА -->
+        <div class="content active page-transition" id="page1">
+            <h1 class="title">
+                <i class="fas fa-robot"></i> Обзор от ИИ
+                <i class="fas fa-baby"></i>
+            </h1>
+            
+            <div class="text-box">
+                <p class="main-text">
+                    <span class="highlight">Младенец</span> — это ребенок от рождения до одного года, включая период новорожденности (первые 4 недели). В этот критический год жизни происходят интенсивный рост (в 1,5 раза) и утроение массы тела, требующие тщательного ухода из-за уязвимости. Младенцы полностью зависят от взрослых, а также быстро учатся распознавать голоса и лица.
+                </p>
+                
+                <div class="fun-elements">
+                    <div class="bouncing-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="bouncing-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="bouncing-icon">
+                        <i class="fas fa-child"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 3D Кнопка -->
+            <button class="btn-3d" id="jopa-btn">
+                <span class="btn-front">
+                    <i class="fas fa-smile-wink"></i> jopa
+                </span>
+                <span class="btn-back"></span>
+                <span class="btn-bottom"></span>
+            </button>
+            
+            <div class="hint">
+                <i class="fas fa-hand-point-up"></i> Нажми на кнопку!
+            </div>
+        </div>
+        
+        <!-- ВТОРАЯ СТРАНИЦА -->
+        <div class="content" id="page2">
+            <h1 class="title">
+                <i class="fas fa-key"></i> Секретная страница!
+                <i class="fas fa-lock-open"></i>
+            </h1>
+            
+            <div class="text-box secret-box">
+                <div class="confetti">
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                    <div class="confetti-piece"></div>
+                </div>
+                
+                <div class="code-word">
+                    <i class="fas fa-carrot"></i>
+                    <h2>кодовое слово - <span class="carrot-text">морковка</span></h2>
+                    <i class="fas fa-carrot"></i>
+                </div>
+                
+                <p class="secret-text">
+                    Поздравляем! Вы нашли секретное кодовое слово! 
+                    Морковка - это не только полезный овощ, но и отличное слово!
+                </p>
+            </div>
+            
+            <!-- Кнопка для возврата -->
+            <button class="btn-3d back-btn" id="back-btn">
+                <span class="btn-front">
+                    <i class="fas fa-home"></i> Вернуться назад
+                </span>
+                <span class="btn-back"></span>
+                <span class="btn-bottom"></span>
+            </button>
+            
+            <div class="hint">
+                <i class="fas fa-arrow-left"></i> Вернуться к обзору
+            </div>
+        </div>
+        
+        <!-- Анимационные элементы (для обеих страниц) -->
+        <div class="floating-icon" style="top:20%; left:10%;">
+            <i class="fas fa-baby-carriage"></i>
+        </div>
+        <div class="floating-icon" style="top:80%; left:15%;">
+            <i class="fas fa-rattle"></i>
+        </div>
+        <div class="floating-icon" style="top:30%; right:15%;">
+            <i class="fas fa-puzzle-piece"></i>
+        </div>
+        <div class="floating-icon" style="top:70%; right:10%;">
+            <i class="fas fa-ice-cream"></i>
+        </div>
+        <div class="floating-icon carrot-icon" style="top:40%; left:8%; display: none;">
+            <i class="fas fa-carrot"></i>
+        </div>
+        <div class="floating-icon carrot-icon" style="top:60%; left:12%; display: none;">
+            <i class="fas fa-carrot"></i>
+        </div>
+        <div class="floating-icon carrot-icon" style="top:45%; right:8%; display: none;">
+            <i class="fas fa-carrot"></i>
+        </div>
+        <div class="floating-icon carrot-icon" style="top:65%; right:12%; display: none;">
+            <i class="fas fa-carrot"></i>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const jopaBtn = document.getElementById('jopa-btn');
+            const backBtn = document.getElementById('back-btn');
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+            const floatingIcons = document.querySelectorAll('.floating-icon');
+            const carrotIcons = document.querySelectorAll('.carrot-icon');
+            const tinselPieces = document.querySelectorAll('.tinsel-piece');
+            
+            // Инициализация анимаций
+            initAnimations();
+            
+            // Обработчик кнопки "jopa"
+            if (jopaBtn) {
+                jopaBtn.addEventListener('click', function() {
+                    // Анимация нажатия кнопки
+                    this.style.transform = 'translateY(8px)';
+                    
+                    // Плавный переход на вторую страницу
+                    setTimeout(() => {
+                        page1.classList.remove('active');
+                        page1.classList.remove('page-transition');
+                        
+                        // Показываем морковки на второй странице
+                        carrotIcons.forEach(icon => {
+                            icon.style.display = 'block';
+                        });
+                        
+                        // Прячем детские иконки
+                        document.querySelectorAll('.floating-icon:not(.carrot-icon)').forEach(icon => {
+                            icon.style.display = 'none';
+                        });
+                        
+                        // Показываем вторую страницу с анимацией
+                        setTimeout(() => {
+                            page2.classList.add('active');
+                            page2.classList.add('page-transition');
+                        }, 50);
+                    }, 300);
+                });
+            }
+            
+            // Обработчик кнопки "назад"
+            if (backBtn) {
+                backBtn.addEventListener('click', function() {
+                    // Анимация нажатия кнопки
+                    this.style.transform = 'translateY(8px)';
+                    
+                    // Плавный переход на первую страницу
+                    setTimeout(() => {
+                        page2.classList.remove('active');
+                        page2.classList.remove('page-transition');
+                        
+                        // Прячем морковки
+                        carrotIcons.forEach(icon => {
+                            icon.style.display = 'none';
+                        });
+                        
+                        // Показываем детские иконки
+                        document.querySelectorAll('.floating-icon:not(.carrot-icon)').forEach(icon => {
+                            icon.style.display = 'block';
+                        });
+                        
+                        // Показываем первую страницу с анимацией
+                        setTimeout(() => {
+                            page1.classList.add('active');
+                            page1.classList.add('page-transition');
+                        }, 50);
+                    }, 300);
+                });
+            }
+            
+            // Инициализация анимаций
+            function initAnimations() {
+                // Случайное движение плавающим иконкам
+                floatingIcons.forEach(icon => {
+                    const duration = 5 + Math.random() * 5;
+                    icon.style.animationDuration = `${duration}s`;
+                    
+                    const delay = Math.random() * 2;
+                    icon.style.animationDelay = `${delay}s`;
+                });
+                
+                // Интерактивность кнопок
+                const buttons3d = document.querySelectorAll('.btn-3d');
+                buttons3d.forEach(button => {
+                    button.addEventListener('mouseenter', function() {
+                        this.style.transform = 'scale(1.05)';
+                    });
+                    
+                    button.addEventListener('mouseleave', function() {
+                        this.style.transform = 'scale(1)';
+                    });
+                });
+                
+                // Эффект "пульсации" для мишуры
+                setInterval(() => {
+                    tinselPieces.forEach(piece => {
+                        const randomScale = 0.9 + Math.random() * 0.3;
+                        piece.style.transform = `scale(${randomScale})`;
+                    });
+                }, 1000);
+                
+                // Случайное мерцание мишуры
+                setInterval(() => {
+                    const randomPiece = tinselPieces[Math.floor(Math.random() * tinselPieces.length)];
+                    randomPiece.style.boxShadow = '0 0 20px rgba(255, 77, 232, 0.8)';
+                    setTimeout(() => {
+                        randomPiece.style.boxShadow = '0 0 10px rgba(255, 77, 232, 0.5)';
+                    }, 300);
+                }, 1500);
+            }
+            
+            // Добавляем эффект при загрузке страницы
+            setTimeout(() => {
+                document.querySelector('.container').style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
